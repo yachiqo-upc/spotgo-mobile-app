@@ -36,7 +36,7 @@ enum class ParkingAdminDestination(@get:StringRes val label: Int, @get:DrawableR
     MORE(R.string.admin_more, R.drawable.ic_more),
 }
 
-private enum class AdminScreen { MAIN, INFRASTRUCTURE }
+private enum class AdminScreen { MAIN, INFRASTRUCTURE, UPLOAD }
 
 @Composable
 fun ParkingAdminLayout(
@@ -52,6 +52,7 @@ fun ParkingAdminLayout(
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
     BackHandler {
         if (showMore) showMore = false
+        else if (screen == AdminScreen.UPLOAD) screen = AdminScreen.INFRASTRUCTURE
         else if (screen != AdminScreen.MAIN) screen = AdminScreen.MAIN
         else onBackToLogin()
     }
@@ -59,6 +60,7 @@ fun ParkingAdminLayout(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
+            if (screen != AdminScreen.UPLOAD) {
             NavigationBar(
                 modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
                 windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -87,11 +89,15 @@ fun ParkingAdminLayout(
                     )
                 }
             }
+            }
         },
     ) { innerPadding ->
         Box(Modifier.fillMaxSize().padding(innerPadding)) {
-            if (screen == AdminScreen.INFRASTRUCTURE) ParkingInfrastructureScreen(
-                onOpenUpload = unavailableAction, onOpenMap = unavailableAction, onUnavailableAction = unavailableAction)
+            if (screen == AdminScreen.UPLOAD) UploadFloorPlanScreen(
+                onBack = { screen = AdminScreen.INFRASTRUCTURE }, onOpenMap = unavailableAction,
+                onUnavailableAction = unavailableAction)
+            else if (screen == AdminScreen.INFRASTRUCTURE) ParkingInfrastructureScreen(
+                onOpenUpload = { screen = AdminScreen.UPLOAD }, onOpenMap = unavailableAction, onUnavailableAction = unavailableAction)
             else if (content != null) content(destination)
             else when (destination) {
                 ParkingAdminDestination.DASHBOARD -> AdminDashboardScreen(
