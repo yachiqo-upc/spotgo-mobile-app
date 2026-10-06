@@ -37,29 +37,33 @@ enum class DriverDestination(@get:StringRes val label: Int, @get:DrawableRes val
     PROFILE(R.string.driver_profile, R.drawable.ic_profile),
 }
 
+private enum class DriverFlow { MAIN, ZONE_DETAILS, CONFIRMED }
+
 @Composable
 fun DriverLayout(
     onBackToLogin: () -> Unit,
     content: (@Composable (DriverDestination) -> Unit)? = null,
 ) {
     var destination by rememberSaveable { mutableStateOf(DriverDestination.EXPLORE) }
-    var showZoneDetails by rememberSaveable { mutableStateOf(false) }
+    var flow by rememberSaveable { mutableStateOf(DriverFlow.MAIN) }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.driver_action_unavailable)
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
-    BackHandler(enabled = showZoneDetails) { showZoneDetails = false }
+    BackHandler(enabled = flow != DriverFlow.MAIN) {
+        flow = if (flow == DriverFlow.CONFIRMED) DriverFlow.ZONE_DETAILS else DriverFlow.MAIN
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            if (!showZoneDetails) {
+            if (flow != DriverFlow.ZONE_DETAILS) {
             NavigationBar(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
                 windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                 DriverDestination.entries.forEach { item ->
                     NavigationBarItem(
-                        selected = item == destination,
-                        onClick = { destination = item },
+                        selected = item == if (flow == DriverFlow.CONFIRMED) DriverDestination.RESERVATIONS else destination,
+                        onClick = { destination = item; flow = DriverFlow.MAIN },
                         icon = {
                             FigmaIcon(item.icon)
                         },
@@ -78,14 +82,18 @@ fun DriverLayout(
         },
     ) { innerPadding ->
         Box(Modifier.fillMaxSize().padding(innerPadding)) {
-            if (showZoneDetails) ZoneDetailsScreen(
-                onBack = { showZoneDetails = false }, onContinue = unavailableAction,
+            if (flow == DriverFlow.ZONE_DETAILS) ZoneDetailsScreen(
+                onBack = { flow = DriverFlow.MAIN }, onContinue = { flow = DriverFlow.CONFIRMED },
+                onUnavailableAction = unavailableAction,
+            )
+            else if (flow == DriverFlow.CONFIRMED) ReservationConfirmedScreen(
+                onMyReservations = { destination = DriverDestination.RESERVATIONS; flow = DriverFlow.MAIN },
                 onUnavailableAction = unavailableAction,
             )
             else if (content != null) content(destination)
             else when (destination) {
                 DriverDestination.EXPLORE -> ExploreParkingScreen(
-                    onOpenZone = { showZoneDetails = true },
+                    onOpenZone = { flow = DriverFlow.ZONE_DETAILS },
                     onProfile = { destination = DriverDestination.PROFILE },
                     onUnavailableAction = unavailableAction,
                 )
