@@ -82,7 +82,7 @@ internal fun StatusBadge(label: String, positive: Boolean = true) {
     ) {
         Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            Image(painterResource(R.drawable.status_available),
+            Image(painterResource(if (positive) R.drawable.status_available else R.drawable.status_upcoming),
                 contentDescription = null, modifier = Modifier.size(8.dp),
                 colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
                     if (positive) DriverAvailable else MaterialTheme.colorScheme.primary))

@@ -97,6 +97,10 @@ fun DriverLayout(
                     onProfile = { destination = DriverDestination.PROFILE },
                     onUnavailableAction = unavailableAction,
                 )
+                DriverDestination.RESERVATIONS -> ReservationsScreen(
+                    onProfile = { destination = DriverDestination.PROFILE },
+                    onUnavailableAction = unavailableAction,
+                )
                 else -> FeaturePlaceholder(stringResource(destination.label))
             }
         }
