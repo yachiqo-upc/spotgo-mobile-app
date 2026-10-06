@@ -13,6 +13,8 @@ The application organizes navigation into two workspaces:
 
 Each workspace has its own layout and navigation state. The login screen provides access to both workspaces.
 
+The Driver interface includes parking exploration, zone details, reservation confirmation, reservation lists, payment summaries, and a profile. The parking map and display data are packaged locally with the application.
+
 ## Technology
 
 - Kotlin
@@ -61,7 +63,7 @@ Run the following commands from the project directory on Windows:
 
 On macOS or Linux, use `./gradlew` instead of `./gradlew.bat`.
 
-Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, tab selection, returning to the login screen, activity recreation, login placeholders, and clearing the password field.
+Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, all six Driver screens, tab selection, nested back navigation, signing out, activity recreation, login placeholders, and clearing the password field.
 
 The debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Lint reports are generated under `app/build/reports/`.
 
@@ -101,6 +103,6 @@ SpotGo uses a dark color palette with yellow accents and the Plus Jakarta Sans t
 
 ## Contributing
 
-Keep source code, identifiers, comments, interface text, and documentation in English. Add user-facing text to `app/src/main/res/values/strings.xml` and reuse the application theme and shared components.
+Keep source code, identifiers, comments, interface text, and documentation in English. Add user-facing text to string resource files in `app/src/main/res/values/` and reuse the application theme and shared components.
 
 Place screens in the appropriate role package and connect them to the corresponding workspace destination. Run the relevant build, lint, and test commands before submitting changes.

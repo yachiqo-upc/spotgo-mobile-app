@@ -29,11 +29,12 @@ internal fun DriverPage(
     title: String,
     subtitle: String? = null,
     onProfile: (() -> Unit)? = null,
+    prominentTitle: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 14.dp),
+            Modifier.fillMaxWidth().heightIn(min = 134.dp).padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 14.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp),
         ) {
             Row(Modifier.fillMaxWidth().height(40.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -45,7 +46,8 @@ internal fun DriverPage(
                     }
                 }
             }
-            Text(title, style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp, lineHeight = 32.sp))
+            Text(title, style = MaterialTheme.typography.headlineMedium.copy(
+                fontSize = if (prominentTitle) 27.sp else 24.sp, lineHeight = if (prominentTitle) 34.sp else 32.sp))
             subtitle?.let {
                 Text(it, style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp, lineHeight = 19.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -68,6 +70,7 @@ internal fun DriverPanel(
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.onSurface,
         shape = RoundedCornerShape(20.dp),
         border = BorderStroke(if (outlined) 1.dp else 0.6.dp,
             if (outlined) DriverCardOutline else MaterialTheme.colorScheme.outline),

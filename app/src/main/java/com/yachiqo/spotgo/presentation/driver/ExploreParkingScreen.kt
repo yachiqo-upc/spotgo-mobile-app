@@ -24,7 +24,7 @@ import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExploreParkingScreen(onOpenZone: () -> Unit, onProfile: () -> Unit, onUnavailableAction: () -> Unit) {
-    DriverPage(stringResource(R.string.explore_title), stringResource(R.string.driver_location), onProfile) {
+    DriverPage(stringResource(R.string.explore_title), stringResource(R.string.driver_location), onProfile, prominentTitle = true) {
         SearchBar(
             inputField = {
                 SearchBarDefaults.InputField(query = "", onQueryChange = {}, onSearch = {},
@@ -53,6 +53,7 @@ private fun ExploreMap(onOpenZone: () -> Unit, onUnavailableAction: () -> Unit) 
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline), modifier = Modifier.fillMaxWidth()) {
         BoxWithConstraints(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))) {
             val scale = maxWidth / 376.dp
+            val rightMarkerOffset = minOf(282.dp * scale, maxWidth - 94.dp)
             Column {
                 Box(Modifier.fillMaxWidth().height(349.dp * scale)) {
                     ParkingMapBase()
@@ -71,16 +72,17 @@ private fun ExploreMap(onOpenZone: () -> Unit, onUnavailableAction: () -> Unit) 
                     ParkingMarker(stringResource(R.string.explore_marker_five), false, onOpenZone,
                         Modifier.offset(20.dp * scale, 221.dp * scale))
                     ParkingMarker(stringResource(R.string.explore_marker_ten), false, onOpenZone,
-                        Modifier.offset(282.dp * scale, 292.dp * scale))
+                        Modifier.offset(rightMarkerOffset, 292.dp * scale))
                     Text(stringResource(R.string.explore_walking_distance),
                         Modifier.offset(17.dp * scale, 332.dp * scale), style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Surface(Modifier.fillMaxWidth().padding(12.dp), shape = RoundedCornerShape(20.dp),
                         color = MaterialTheme.colorScheme.surfaceContainer) {
-                        Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Row(Modifier.padding(start = 10.dp).height(32.dp), verticalAlignment = Alignment.CenterVertically) {
                             Text(stringResource(R.string.explore_last_updated), Modifier.weight(1f),
                                 style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            TextButton(onClick = onUnavailableAction, contentPadding = PaddingValues(horizontal = 10.dp)) {
+                            TextButton(onClick = onUnavailableAction, modifier = Modifier.height(32.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp)) {
                                 Text(stringResource(R.string.explore_refresh), style = MaterialTheme.typography.bodySmall)
                             }
                         }
@@ -88,6 +90,7 @@ private fun ExploreMap(onOpenZone: () -> Unit, onUnavailableAction: () -> Unit) 
                 }
                 Surface(Modifier.fillMaxWidth().padding(horizontal = 13.dp).padding(bottom = 14.dp),
                     shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)) {
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -103,14 +106,7 @@ private fun ExploreMap(onOpenZone: () -> Unit, onUnavailableAction: () -> Unit) 
                                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
-                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            StatusBadge(stringResource(R.string.explore_spots))
-                            FilterChip(false, onUnavailableAction, { Text(stringResource(R.string.driver_covered)) })
-                            FilterChip(false, onUnavailableAction, { Text(stringResource(R.string.driver_ev)) })
-                            Spacer(Modifier.weight(1f))
-                            FavoriteButton(false, onUnavailableAction)
-                        }
+                        ParkingAmenities(onUnavailableAction)
                         Button(onOpenZone, Modifier.fillMaxWidth().heightIn(min = 40.dp), shape = RoundedCornerShape(16.dp)) {
                             Text(stringResource(R.string.explore_view_parking))
                         }
@@ -119,6 +115,34 @@ private fun ExploreMap(onOpenZone: () -> Unit, onUnavailableAction: () -> Unit) 
             }
         }
     }
+}
+
+@Composable
+private fun ParkingAmenities(onUnavailableAction: () -> Unit) {
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        if (maxWidth < 300.dp) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                itemVerticalAlignment = Alignment.CenterVertically) {
+                AmenityChips(onUnavailableAction)
+                FavoriteButton(false, onUnavailableAction)
+            }
+        } else {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                AmenityChips(onUnavailableAction)
+                Spacer(Modifier.weight(1f))
+                FavoriteButton(false, onUnavailableAction)
+            }
+        }
+    }
+}
+
+@Composable
+private fun AmenityChips(onUnavailableAction: () -> Unit) {
+    StatusBadge(stringResource(R.string.explore_spots))
+    FilterChip(false, onUnavailableAction, { Text(stringResource(R.string.driver_covered)) })
+    FilterChip(false, onUnavailableAction, { Text(stringResource(R.string.driver_ev)) })
 }
 
 @Composable

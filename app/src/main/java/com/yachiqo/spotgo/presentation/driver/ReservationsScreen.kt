@@ -21,8 +21,9 @@ fun ReservationsScreen(onProfile: () -> Unit, onUnavailableAction: () -> Unit) {
             listOf(R.string.reservations_upcoming, R.string.reservations_completed, R.string.reservations_cancelled)
                 .forEachIndexed { index, label ->
                     SegmentedButton(selected = index == 0, onClick = onUnavailableAction,
-                        shape = SegmentedButtonDefaults.itemShape(index, 3)) {
-                        Text(stringResource(label), style = MaterialTheme.typography.bodyMedium)
+                        icon = {}, shape = SegmentedButtonDefaults.itemShape(index, 3)) {
+                        Text(stringResource(label), style = MaterialTheme.typography.bodySmall,
+                            maxLines = 1, softWrap = false)
                     }
                 }
         }

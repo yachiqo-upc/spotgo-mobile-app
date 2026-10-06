@@ -57,26 +57,25 @@ fun DriverLayout(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
             if (flow != DriverFlow.ZONE_DETAILS) {
-            NavigationBar(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
-                windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-                DriverDestination.entries.forEach { item ->
-                    NavigationBarItem(
-                        selected = item == if (flow == DriverFlow.CONFIRMED) DriverDestination.RESERVATIONS else destination,
-                        onClick = { destination = item; flow = DriverFlow.MAIN },
-                        icon = {
-                            FigmaIcon(item.icon)
-                        },
-                        label = { Text(stringResource(item.label), style = MaterialTheme.typography.labelMedium) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                        ),
-                    )
+                NavigationBar(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
+                    windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer) {
+                    DriverDestination.entries.forEach { item ->
+                        NavigationBarItem(
+                            selected = item == if (flow == DriverFlow.CONFIRMED) DriverDestination.RESERVATIONS else destination,
+                            onClick = { destination = item; flow = DriverFlow.MAIN },
+                            icon = { FigmaIcon(item.icon) },
+                            label = { Text(stringResource(item.label), style = MaterialTheme.typography.labelSmall,
+                                maxLines = 1, softWrap = false) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            ),
+                        )
+                    }
                 }
-            }
             }
         },
     ) { innerPadding ->

@@ -49,7 +49,8 @@ fun ReservationConfirmedScreen(onMyReservations: () -> Unit, onUnavailableAction
                 ReceiptRow(stringResource(R.string.confirmation_amount_paid), stringResource(R.string.zone_total_value))
             }
         }
-        Surface(color = MaterialTheme.colorScheme.surfaceContainer, shape = RoundedCornerShape(20.dp)) {
+        Surface(color = MaterialTheme.colorScheme.surfaceContainer, contentColor = MaterialTheme.colorScheme.onSurface,
+            shape = RoundedCornerShape(20.dp)) {
             Row(Modifier.fillMaxWidth().heightIn(min = 128.dp).padding(16.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Surface(Modifier.size(96.dp), color = Color.White, shape = RoundedCornerShape(12.dp)) {
