@@ -2,6 +2,11 @@ package com.yachiqo.spotgo.presentation.driver
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -11,13 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.yachiqo.spotgo.R
 import com.yachiqo.spotgo.presentation.common.FeaturePlaceholder
 import com.yachiqo.spotgo.presentation.common.FigmaIcon
-import com.yachiqo.spotgo.presentation.common.RoleScaffold
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
+import kotlinx.coroutines.launch
 
 // Presentation destinations, not domain entities.
 enum class DriverDestination(@get:StringRes val label: Int, @get:DrawableRes val icon: Int) {
@@ -30,17 +39,19 @@ enum class DriverDestination(@get:StringRes val label: Int, @get:DrawableRes val
 @Composable
 fun DriverLayout(
     onBackToLogin: () -> Unit,
-    content: @Composable (DriverDestination) -> Unit = { destination ->
-        FeaturePlaceholder(stringResource(destination.label))
-    },
+    content: (@Composable (DriverDestination) -> Unit)? = null,
 ) {
     var destination by rememberSaveable { mutableStateOf(DriverDestination.EXPLORE) }
+    val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val unavailableMessage = stringResource(R.string.driver_action_unavailable)
+    val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
 
-    RoleScaffold(
-        roleLabel = stringResource(R.string.role_driver),
-        onBackToLogin = onBackToLogin,
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
+            NavigationBar(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
+                windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                 DriverDestination.entries.forEach { item ->
                     NavigationBarItem(
                         selected = item == destination,
@@ -49,15 +60,33 @@ fun DriverLayout(
                             FigmaIcon(item.icon)
                         },
                         label = { Text(stringResource(item.label), style = MaterialTheme.typography.labelMedium) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                        ),
                     )
                 }
             }
         },
-        content = { content(destination) },
-    )
+    ) { innerPadding ->
+        Box(Modifier.fillMaxSize().padding(innerPadding)) {
+            if (content != null) content(destination)
+            else when (destination) {
+                DriverDestination.EXPLORE -> ExploreParkingScreen(
+                    onOpenZone = unavailableAction,
+                    onProfile = { destination = DriverDestination.PROFILE },
+                    onUnavailableAction = unavailableAction,
+                )
+                else -> FeaturePlaceholder(stringResource(destination.label))
+            }
+        }
+    }
 }
 
-@Preview(name = "DRIVER · Base", widthDp = 412, heightDp = 915)
+@Preview(name = "Driver", widthDp = 412, heightDp = 915)
 @Composable
 private fun DriverLayoutPreview() {
     SpotGoTheme { DriverLayout(onBackToLogin = {}) }
