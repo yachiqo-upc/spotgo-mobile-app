@@ -31,6 +31,7 @@ internal fun AdminPage(
     subtitle: String,
     onAccount: () -> Unit,
     contentSpacing: androidx.compose.ui.unit.Dp = 10.dp,
+    contentTopPadding: androidx.compose.ui.unit.Dp = 12.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
@@ -52,7 +53,7 @@ internal fun AdminPage(
         }
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())
-                .padding(horizontal = 18.dp).padding(top = 12.dp, bottom = 18.dp),
+                .padding(horizontal = 18.dp).padding(top = contentTopPadding, bottom = 18.dp),
             verticalArrangement = Arrangement.spacedBy(contentSpacing),
             content = content,
         )
@@ -63,12 +64,13 @@ internal fun AdminPage(
 internal fun AdminPanel(
     modifier: Modifier = Modifier,
     outlined: Boolean = false,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        color = containerColor,
         contentColor = MaterialTheme.colorScheme.onSurface,
         border = BorderStroke(if (outlined) 1.dp else 0.6.dp,
             if (outlined) AdminCardOutline else MaterialTheme.colorScheme.outline),

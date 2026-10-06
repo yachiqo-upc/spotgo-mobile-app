@@ -58,7 +58,7 @@ fun ParkingAdminLayout(
                 ParkingAdminDestination.entries.forEach { item ->
                     NavigationBarItem(
                         selected = item == destination,
-                        enabled = item == ParkingAdminDestination.DASHBOARD,
+                        enabled = item == ParkingAdminDestination.DASHBOARD || item == ParkingAdminDestination.LIVE_MAP,
                         onClick = { destination = item },
                         icon = {
                             FigmaIcon(item.icon)
@@ -83,9 +83,10 @@ fun ParkingAdminLayout(
             if (content != null) content(destination)
             else when (destination) {
                 ParkingAdminDestination.DASHBOARD -> AdminDashboardScreen(
-                    onOpenOccupancy = unavailableAction,
+                    onOpenOccupancy = { destination = ParkingAdminDestination.LIVE_MAP },
                     onUnavailableAction = unavailableAction,
                 )
+                ParkingAdminDestination.LIVE_MAP -> LiveOccupancyScreen(onUnavailableAction = unavailableAction)
                 else -> FeaturePlaceholder(stringResource(destination.label))
             }
         }
