@@ -80,5 +80,5 @@ private fun DashboardMetric(value: String, label: String, color: Color, modifier
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun AdminDashboardPreview() {
-    SpotGoTheme { AdminDashboardScreen({}, {}) }
+    SpotGoTheme { Surface { AdminDashboardScreen({}, {}) } }
 }

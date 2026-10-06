@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yachiqo.spotgo.R
 import com.yachiqo.spotgo.presentation.parking_admin.components.*
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme

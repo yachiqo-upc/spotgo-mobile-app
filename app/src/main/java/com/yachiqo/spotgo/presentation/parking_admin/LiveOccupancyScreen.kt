@@ -1,9 +1,7 @@
 package com.yachiqo.spotgo.presentation.parking_admin
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yachiqo.spotgo.R
-import com.yachiqo.spotgo.presentation.common.FigmaIcon
 import com.yachiqo.spotgo.presentation.parking_admin.components.*
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 
@@ -26,29 +23,8 @@ import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 fun LiveOccupancyScreen(onUnavailableAction: () -> Unit) {
     AdminPage(stringResource(R.string.admin_occupancy_title), stringResource(R.string.admin_occupancy_subtitle),
         onAccount = onUnavailableAction, contentSpacing = 16.dp, contentTopPadding = 18.dp) {
-        SearchBar(
-            inputField = {
-                SearchBarDefaults.InputField(
-                    query = "", onQueryChange = {}, onSearch = {}, expanded = false,
-                    onExpandedChange = { if (it) onUnavailableAction() },
-                    placeholder = { Text(stringResource(R.string.admin_occupancy_search)) },
-                    leadingIcon = { FigmaIcon(R.drawable.ic_explore) },
-                )
-            },
-            expanded = false, onExpandedChange = {}, modifier = Modifier.fillMaxWidth(),
-            windowInsets = WindowInsets(0),
-            colors = SearchBarDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        ) {}
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).height(40.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            FilterChip(selected = true, onClick = onUnavailableAction,
-                label = { Text(stringResource(R.string.admin_occupancy_all)) },
-                leadingIcon = { FigmaIcon(R.drawable.ic_payments) })
-            FilterChip(selected = false, onClick = onUnavailableAction,
-                label = { Text(stringResource(R.string.admin_available)) })
-            FilterChip(selected = false, onClick = onUnavailableAction,
-                label = { Text(stringResource(R.string.admin_occupancy_issues)) })
-        }
+        AdminSearchBar(R.string.admin_occupancy_search, onUnavailableAction)
+        AdminFilterRow(listOf(R.string.admin_occupancy_all, R.string.admin_available, R.string.admin_occupancy_issues), onUnavailableAction)
         OccupancyMap(onUnavailableAction)
     }
 }
@@ -108,5 +84,5 @@ private fun OccupancyStat(value: String, label: String, color: Color, modifier: 
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun LiveOccupancyPreview() {
-    SpotGoTheme { LiveOccupancyScreen({}) }
+    SpotGoTheme { Surface { LiveOccupancyScreen({}) } }
 }

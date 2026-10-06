@@ -26,6 +26,6 @@
     <string name="admin_alerts_conflict_body">Spot A-06 has overlapping assignments. Choose a compatible alternative.</string>
     <string name="admin_alerts_six_minutes">6 min ago</string>
     <string name="admin_alerts_capacity">High Capacity</string>
-    <string name="admin_alerts_capacity_body">Javier Prado Parking · 96% occupied. Alert triggers only above 95%.</string>
+    <string name="admin_alerts_capacity_body" formatted="false">Javier Prado Parking · 96% occupied. Alert triggers only above 95%.</string>
     <string name="admin_alerts_one_minute">1 min ago</string>
 </resources>

@@ -1,7 +1,7 @@
 <resources>
     <string name="admin_dashboard_title">Administrator dashboard</string>
     <string name="admin_dashboard_subtitle">Javier Prado Parking · San Isidro · Live status</string>
-    <string name="admin_dashboard_occupancy_value">58%</string>
+    <string name="admin_dashboard_occupancy_value" formatted="false">58%</string>
     <string name="admin_dashboard_available_value">6</string>
     <string name="admin_dashboard_open_alerts">Open alerts</string>
     <string name="admin_dashboard_alerts_value">1</string>
@@ -17,7 +17,7 @@
     <string name="admin_dashboard_reserved_summary">2 reserved · arrivals pending</string>
     <string name="admin_dashboard_sensor_health">Sensor health</string>
     <string name="admin_dashboard_sensor_summary">22 online · 2 offline</string>
-    <string name="admin_dashboard_sensor_value">92%</string>
+    <string name="admin_dashboard_sensor_value" formatted="false">92%</string>
     <string name="admin_dashboard_recent_alerts">Recent alerts</string>
     <string name="admin_dashboard_sensor_offline">Sensor offline</string>
     <string name="admin_dashboard_offline_location">Javier Prado · Spot B-14</string>

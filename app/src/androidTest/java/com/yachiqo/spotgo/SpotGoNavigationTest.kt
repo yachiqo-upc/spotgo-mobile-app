@@ -44,9 +44,9 @@ class SpotGoNavigationTest {
     fun adminTabsAndBackToLoginWorkWithoutCredentials() {
         compose.onNodeWithText("Parking Admin").performScrollTo().performClick()
         compose.onNodeWithText("Alerts").performClick()
-        compose.onAllNodesWithText("Alerts").assertCountEquals(2)
+        compose.onNodeWithText("Operational alerts").assertIsDisplayed()
         compose.onNode(hasText("Alerts") and isSelectable()).assertIsSelected()
-        compose.onNodeWithText("Back to login").performClick()
+        pressBack()
         compose.onNodeWithText("Welcome back").assertIsDisplayed()
     }
 

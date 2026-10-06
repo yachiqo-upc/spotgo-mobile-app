@@ -15,11 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +51,8 @@ fun ParkingAdminLayout(
     var screen by rememberSaveable { mutableStateOf(AdminScreen.MAIN) }
     var mapParent by rememberSaveable { mutableStateOf(AdminScreen.INFRASTRUCTURE) }
     val snackbar = remember { SnackbarHostState() }
+    var snackbarHeight by remember { mutableIntStateOf(0) }
+    val snackbarPadding = with(LocalDensity.current) { snackbarHeight.toDp() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.admin_action_unavailable)
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
@@ -60,7 +65,7 @@ fun ParkingAdminLayout(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        snackbarHost = { SnackbarHost(snackbar, Modifier.onSizeChanged { snackbarHeight = it.height }) },
         bottomBar = {
             if (screen == AdminScreen.MAIN || screen == AdminScreen.INFRASTRUCTURE) {
             NavigationBar(
@@ -94,7 +99,8 @@ fun ParkingAdminLayout(
             }
         },
     ) { innerPadding ->
-        Box(Modifier.fillMaxSize().padding(innerPadding)) {
+        Box(Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding)
+            .padding(bottom = snackbarPadding)) {
             if (screen == AdminScreen.DIGITAL_MAP) DigitalParkingMapScreen(
                 onBack = { screen = mapParent }, onUnavailableAction = unavailableAction)
             else if (screen == AdminScreen.UPLOAD) UploadFloorPlanScreen(
