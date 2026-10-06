@@ -36,7 +36,7 @@ enum class ParkingAdminDestination(@get:StringRes val label: Int, @get:DrawableR
     MORE(R.string.admin_more, R.drawable.ic_more),
 }
 
-private enum class AdminScreen { MAIN, INFRASTRUCTURE, UPLOAD }
+private enum class AdminScreen { MAIN, INFRASTRUCTURE, UPLOAD, DIGITAL_MAP }
 
 @Composable
 fun ParkingAdminLayout(
@@ -46,12 +46,14 @@ fun ParkingAdminLayout(
     var destination by rememberSaveable { mutableStateOf(ParkingAdminDestination.DASHBOARD) }
     var showMore by rememberSaveable { mutableStateOf(false) }
     var screen by rememberSaveable { mutableStateOf(AdminScreen.MAIN) }
+    var mapParent by rememberSaveable { mutableStateOf(AdminScreen.INFRASTRUCTURE) }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.admin_action_unavailable)
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
     BackHandler {
         if (showMore) showMore = false
+        else if (screen == AdminScreen.DIGITAL_MAP) screen = mapParent
         else if (screen == AdminScreen.UPLOAD) screen = AdminScreen.INFRASTRUCTURE
         else if (screen != AdminScreen.MAIN) screen = AdminScreen.MAIN
         else onBackToLogin()
@@ -60,7 +62,7 @@ fun ParkingAdminLayout(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            if (screen != AdminScreen.UPLOAD) {
+            if (screen == AdminScreen.MAIN || screen == AdminScreen.INFRASTRUCTURE) {
             NavigationBar(
                 modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
                 windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -93,11 +95,16 @@ fun ParkingAdminLayout(
         },
     ) { innerPadding ->
         Box(Modifier.fillMaxSize().padding(innerPadding)) {
-            if (screen == AdminScreen.UPLOAD) UploadFloorPlanScreen(
-                onBack = { screen = AdminScreen.INFRASTRUCTURE }, onOpenMap = unavailableAction,
+            if (screen == AdminScreen.DIGITAL_MAP) DigitalParkingMapScreen(
+                onBack = { screen = mapParent }, onUnavailableAction = unavailableAction)
+            else if (screen == AdminScreen.UPLOAD) UploadFloorPlanScreen(
+                onBack = { screen = AdminScreen.INFRASTRUCTURE },
+                onOpenMap = { mapParent = AdminScreen.UPLOAD; screen = AdminScreen.DIGITAL_MAP },
                 onUnavailableAction = unavailableAction)
             else if (screen == AdminScreen.INFRASTRUCTURE) ParkingInfrastructureScreen(
-                onOpenUpload = { screen = AdminScreen.UPLOAD }, onOpenMap = unavailableAction, onUnavailableAction = unavailableAction)
+                onOpenUpload = { screen = AdminScreen.UPLOAD },
+                onOpenMap = { mapParent = AdminScreen.INFRASTRUCTURE; screen = AdminScreen.DIGITAL_MAP },
+                onUnavailableAction = unavailableAction)
             else if (content != null) content(destination)
             else when (destination) {
                 ParkingAdminDestination.DASHBOARD -> AdminDashboardScreen(
