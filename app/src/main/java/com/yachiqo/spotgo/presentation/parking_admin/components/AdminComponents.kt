@@ -1,7 +1,9 @@
 package com.yachiqo.spotgo.presentation.parking_admin.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yachiqo.spotgo.R
 import com.yachiqo.spotgo.presentation.common.SpotGoWordmark
+import com.yachiqo.spotgo.presentation.common.FigmaIcon
 
 internal val AdminAvailable = Color(0xFF44E38B)
 internal val AdminWarning = Color(0xFFFFB84D)
@@ -92,4 +95,28 @@ internal fun AdminStatusRow(title: String, subtitle: String, value: String, onCl
         modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).clickable(onClick = onClick),
         colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     )
+}
+
+@Composable
+internal fun AdminFilterRow(labels: List<Int>, onUnavailableAction: () -> Unit) {
+    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).height(40.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        labels.forEachIndexed { index, label ->
+            FilterChip(selected = index == 0, onClick = onUnavailableAction,
+                label = { Text(stringResource(label)) },
+                leadingIcon = if (index == 0) ({ FigmaIcon(R.drawable.ic_payments) }) else null)
+        }
+    }
+}
+
+@Composable
+internal fun AdminStatusBadge(label: String, color: Color, background: Color, dot: Int,
+    minLabelWidth: androidx.compose.ui.unit.Dp = 0.dp) {
+    Surface(color = background, shape = RoundedCornerShape(100.dp)) {
+        Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+            Image(painterResource(dot), null, Modifier.size(8.dp))
+            Text(label, Modifier.widthIn(min = minLabelWidth), color = color, style = MaterialTheme.typography.bodySmall)
+        }
+    }
 }
