@@ -9,9 +9,15 @@ The application organizes navigation into two workspaces:
 | Role | Navigation destinations |
 | --- | --- |
 | Driver | Explore, Reservations, Payments, Profile |
-| Parking Admin | Dashboard, Live map, Alerts, More |
+| Parking Admin | Dashboard, Occupancy, Alerts, More |
 
 Each workspace has its own layout and navigation state. The login screen provides access to both workspaces.
+
+Create account opens Driver registration. The registration form starts with empty fields and returns to login through Sign in or the back button.
+
+Parking administrators access parking infrastructure from More. Infrastructure connects to floor-plan upload and the digital parking map, with dedicated navigation for each view.
+
+The Parking Admin account button returns to login from Dashboard, Occupancy, Alerts, and Parking infrastructure. Driver returns to login through Sign out in Profile.
 
 ## Technology
 
@@ -61,7 +67,7 @@ Run the following commands from the project directory on Windows:
 
 On macOS or Linux, use `./gradlew` instead of `./gradlew.bat`.
 
-Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, tab selection, returning to the login screen, activity recreation, login placeholders, and clearing the password field.
+Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, tab selection, returning to the login screen, activity recreation, login and registration inputs, the administrator menu, and navigation between infrastructure, floor-plan upload, and the digital parking map.
 
 The debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Lint reports are generated under `app/build/reports/`.
 
@@ -84,14 +90,14 @@ app/src/main/
     `-- values/
 ```
 
-- `presentation/login`: login interface and input state.
+- `presentation/login`: login and registration interfaces and input state.
 - `presentation/driver`: Driver workspace and navigation destinations.
 - `presentation/parking_admin`: Parking Admin workspace and navigation destinations.
 - `presentation/common`: shared interface components.
 - `ui/theme`: application colors, typography, and Material theme.
 - `res`: localized string resources, icons, and fonts.
 
-Workspace layouts apply system insets and manage their navigation bars. Screens provide their content through the layout's `content` parameter. Role and tab selections are preserved across activity recreation.
+Workspace layouts apply system insets, manage their navigation bars, and connect their screens through local navigation. The optional `content` callback supports composing screens within a workspace. Role, tab, and administrator view selections are preserved across activity recreation.
 
 ## Design
 
@@ -101,6 +107,6 @@ SpotGo uses a dark color palette with yellow accents and the Plus Jakarta Sans t
 
 ## Contributing
 
-Keep source code, identifiers, comments, interface text, and documentation in English. Add user-facing text to `app/src/main/res/values/strings.xml` and reuse the application theme and shared components.
+Keep source code, identifiers, comments, interface text, and documentation in English. Add user-facing text to string resources under `app/src/main/res/values/` and reuse the application theme and shared components.
 
 Place screens in the appropriate role package and connect them to the corresponding workspace destination. Run the relevant build, lint, and test commands before submitting changes.

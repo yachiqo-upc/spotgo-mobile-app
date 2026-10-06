@@ -1,0 +1,19 @@
+<resources>
+    <string name="payments_subtitle">Manage payment methods and parking charges.</string>
+    <string name="payments_balance">Outstanding balance</string>
+    <string name="payments_balance_value">S/ 0.00</string>
+    <string name="payments_up_to_date">Up to date</string>
+    <string name="payments_methods">Payment methods</string>
+    <string name="payments_card">Visa •••• 4242</string>
+    <string name="payments_card_details">Expires 08/29 · Default</string>
+    <string name="payments_add_method">Add payment method</string>
+    <string name="payments_transactions">Recent transactions</string>
+    <string name="payments_see_all">See all</string>
+    <string name="payments_transaction_today">Today · San Isidro, Lima</string>
+    <string name="payments_transaction_larco">24 Sep · Miraflores, Lima</string>
+    <string name="payments_transaction_larco_price">S/ 12.00</string>
+    <string name="payments_san_borja">San Borja Parking</string>
+    <string name="payments_transaction_san_borja">20 Sep · San Borja, Lima</string>
+    <string name="payments_transaction_san_borja_price">S/ 10.00</string>
+    <string name="payments_chevron">›</string>
+</resources>
