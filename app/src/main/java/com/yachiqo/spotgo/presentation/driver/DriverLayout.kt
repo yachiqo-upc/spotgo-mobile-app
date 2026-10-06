@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yachiqo.spotgo.R
-import com.yachiqo.spotgo.presentation.common.FeaturePlaceholder
 import com.yachiqo.spotgo.presentation.common.FigmaIcon
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 import kotlinx.coroutines.launch
@@ -105,7 +104,10 @@ fun DriverLayout(
                     onProfile = { destination = DriverDestination.PROFILE },
                     onUnavailableAction = unavailableAction,
                 )
-                else -> FeaturePlaceholder(stringResource(destination.label))
+                DriverDestination.PROFILE -> ProfileScreen(
+                    onSignOut = onBackToLogin,
+                    onUnavailableAction = unavailableAction,
+                )
             }
         }
     }
