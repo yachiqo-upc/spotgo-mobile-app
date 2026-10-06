@@ -1,0 +1,25 @@
+<resources>
+    <string name="zone_title">Zone details</string>
+    <string name="zone_back">Back to Explore</string>
+    <string name="zone_map_distance">0.4 km away · San Isidro, Lima</string>
+    <string name="zone_directions">Directions</string>
+    <string name="zone_marker_name">Javier Prado</string>
+    <string name="zone_available_count">6</string>
+    <string name="zone_available_spots">spots available</string>
+    <string name="zone_closing_time">11:00 PM</string>
+    <string name="zone_open_until">open until</string>
+    <string name="zone_accessible">Accessible</string>
+    <string name="zone_reserve_title">Reserve this zone</string>
+    <string name="zone_vehicle">Vehicle</string>
+    <string name="zone_vehicle_value">Toyota Yaris · AJK-247</string>
+    <string name="zone_date">Date</string>
+    <string name="zone_today">Today</string>
+    <string name="zone_start_time">Start time</string>
+    <string name="zone_start_time_value">10:30 AM</string>
+    <string name="zone_duration">Duration</string>
+    <string name="zone_duration_value">2 hours</string>
+    <string name="zone_total">Estimated total</string>
+    <string name="zone_total_value">S/ 16.00</string>
+    <string name="zone_continue">Continue</string>
+    <string name="zone_dropdown">⌄</string>
+</resources>
