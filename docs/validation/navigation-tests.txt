@@ -1,0 +1,8 @@
+
+com.yachiqo.spotgo.SpotGoNavigationTest:...
+
+Time: 96.726
+
+OK (3 tests)
+
+
