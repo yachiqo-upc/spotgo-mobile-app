@@ -1,0 +1,13 @@
+<resources>
+    <string name="register_title">Create your Driver account</string>
+    <string name="register_intro">Reserve spaces and pay digitally from your phone.</string>
+    <string name="register_first_name">First name</string>
+    <string name="register_first_name_placeholder">Enter your first name</string>
+    <string name="register_last_name">Last name</string>
+    <string name="register_last_name_placeholder">Enter your last name</string>
+    <string name="register_phone">Phone</string>
+    <string name="register_phone_placeholder">Enter your phone number</string>
+    <string name="register_password_placeholder">At least 8 characters</string>
+    <string name="register_terms">I agree to the Terms and Privacy Policy</string>
+    <string name="register_existing_account">Already have an account?</string>
+</resources>

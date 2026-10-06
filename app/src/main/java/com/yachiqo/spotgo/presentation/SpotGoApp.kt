@@ -11,10 +11,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.yachiqo.spotgo.presentation.driver.DriverLayout
 import com.yachiqo.spotgo.presentation.login.LoginScreen
+import com.yachiqo.spotgo.presentation.login.RegisterScreen
 import com.yachiqo.spotgo.presentation.parking_admin.ParkingAdminLayout
 
 // UI destinations only. There is no session, user entity, or authentication yet.
-private enum class AppDestination { LOGIN, DRIVER, PARKING_ADMIN }
+private enum class AppDestination { LOGIN, REGISTER, DRIVER, PARKING_ADMIN }
 
 @Composable
 fun SpotGoApp() {
@@ -28,7 +29,9 @@ fun SpotGoApp() {
             AppDestination.LOGIN -> LoginScreen(
                 onOpenDriver = { destination = AppDestination.DRIVER },
                 onOpenParkingAdmin = { destination = AppDestination.PARKING_ADMIN },
+                onCreateAccount = { destination = AppDestination.REGISTER },
             )
+            AppDestination.REGISTER -> RegisterScreen(onBackToLogin = backToLogin)
             AppDestination.DRIVER -> DriverLayout(onBackToLogin = backToLogin)
             AppDestination.PARKING_ADMIN -> ParkingAdminLayout(onBackToLogin = backToLogin)
         }

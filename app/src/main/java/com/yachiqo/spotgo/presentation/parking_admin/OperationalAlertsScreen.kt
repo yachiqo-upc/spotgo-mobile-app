@@ -17,9 +17,9 @@ import com.yachiqo.spotgo.presentation.parking_admin.components.*
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 
 @Composable
-fun OperationalAlertsScreen(onUnavailableAction: () -> Unit) {
+fun OperationalAlertsScreen(onUnavailableAction: () -> Unit, onBackToLogin: () -> Unit) {
     AdminPage(stringResource(R.string.admin_alerts_title), stringResource(R.string.admin_alerts_subtitle),
-        onAccount = onUnavailableAction, contentSpacing = 12.dp, contentTopPadding = 14.dp) {
+        onAccount = onBackToLogin, contentSpacing = 12.dp, contentTopPadding = 14.dp) {
         AdminFilterRow(listOf(R.string.admin_occupancy_all, R.string.admin_alerts_critical,
             R.string.admin_alerts_sensor, R.string.admin_alerts_payment), onUnavailableAction)
         AlertCard(R.string.admin_alerts_sensor_offline, R.string.admin_alerts_sensor_body, R.string.admin_alerts_two_minutes,
@@ -63,5 +63,5 @@ private fun AlertCard(title: Int, body: Int, time: Int, priority: Int, color: Co
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun OperationalAlertsPreview() {
-    SpotGoTheme { Surface { OperationalAlertsScreen({}) } }
+    SpotGoTheme { Surface { OperationalAlertsScreen({}, {}) } }
 }

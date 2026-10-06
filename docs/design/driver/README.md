@@ -4,6 +4,7 @@ The Driver screens follow the Mobile App (Driver) page in the [SpotGo Figma file
 
 | Screen | Figma node |
 | --- | --- |
+| 02 - Register | `73:2758` |
 | 03 - Explore parking | `73:2778` |
 | 04 - Zone Details & reserve | `73:2825` |
 | 05 - Reservation confirmed | `73:2868` |
@@ -20,3 +21,5 @@ node docs/design/RenderDriverMapAssets.cjs /absolute/path/to/node_modules/sharp
 ```
 
 Sharp is used only for artwork conversion and is not an application dependency. The map is a local illustration assembled in Compose, with native labels and parking markers. It does not use a map service or location permissions. The booking QR is a fixed visual sample and does not represent a generated reservation.
+
+Register uses native Material 3 Expressive text fields, a secure password field, checkbox, and buttons. Its back and clear-password icons reuse the matching exported artwork already packaged with the app. Personal-data examples in Figma are replaced with generic placeholders; all five input values start empty and terms are unchecked. Passwords remain temporary UI state and are not restored after activity recreation. Create account displays a local pending-action message without registering a user.

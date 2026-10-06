@@ -15,9 +15,10 @@ import com.yachiqo.spotgo.presentation.parking_admin.components.*
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 
 @Composable
-fun ParkingInfrastructureScreen(onOpenUpload: () -> Unit, onOpenMap: () -> Unit, onUnavailableAction: () -> Unit) {
+fun ParkingInfrastructureScreen(onOpenUpload: () -> Unit, onOpenMap: () -> Unit, onUnavailableAction: () -> Unit,
+    onBackToLogin: () -> Unit) {
     AdminPage(stringResource(R.string.admin_infrastructure_title), stringResource(R.string.admin_infrastructure_subtitle),
-        onAccount = onUnavailableAction, contentSpacing = 16.dp, contentTopPadding = 18.dp) {
+        onAccount = onBackToLogin, contentSpacing = 16.dp, contentTopPadding = 18.dp) {
         AdminSearchBar(R.string.admin_infrastructure_search, onUnavailableAction)
         AdminPanel(outlined = true) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
@@ -67,5 +68,5 @@ fun ParkingInfrastructureScreen(onOpenUpload: () -> Unit, onOpenMap: () -> Unit,
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun ParkingInfrastructurePreview() {
-    SpotGoTheme { Surface { ParkingInfrastructureScreen({}, {}, {}) } }
+    SpotGoTheme { Surface { ParkingInfrastructureScreen({}, {}, {}, {}) } }
 }

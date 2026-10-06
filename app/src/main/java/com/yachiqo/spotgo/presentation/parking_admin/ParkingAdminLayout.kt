@@ -108,17 +108,21 @@ fun ParkingAdminLayout(
                 onOpenMap = { mapParent = AdminScreen.UPLOAD; screen = AdminScreen.DIGITAL_MAP },
                 onUnavailableAction = unavailableAction)
             else if (screen == AdminScreen.INFRASTRUCTURE) ParkingInfrastructureScreen(
+                onBackToLogin = onBackToLogin,
                 onOpenUpload = { screen = AdminScreen.UPLOAD },
                 onOpenMap = { mapParent = AdminScreen.INFRASTRUCTURE; screen = AdminScreen.DIGITAL_MAP },
                 onUnavailableAction = unavailableAction)
             else if (content != null) content(destination)
             else when (destination) {
                 ParkingAdminDestination.DASHBOARD -> AdminDashboardScreen(
+                    onBackToLogin = onBackToLogin,
                     onOpenOccupancy = { destination = ParkingAdminDestination.LIVE_MAP },
                     onUnavailableAction = unavailableAction,
                 )
-                ParkingAdminDestination.LIVE_MAP -> LiveOccupancyScreen(onUnavailableAction = unavailableAction)
-                ParkingAdminDestination.ALERTS -> OperationalAlertsScreen(onUnavailableAction = unavailableAction)
+                ParkingAdminDestination.LIVE_MAP -> LiveOccupancyScreen(
+                    onUnavailableAction = unavailableAction, onBackToLogin = onBackToLogin)
+                ParkingAdminDestination.ALERTS -> OperationalAlertsScreen(
+                    onUnavailableAction = unavailableAction, onBackToLogin = onBackToLogin)
                 else -> FeaturePlaceholder(stringResource(destination.label))
             }
         }

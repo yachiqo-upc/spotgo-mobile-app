@@ -13,7 +13,11 @@ The application organizes navigation into two workspaces:
 
 Each workspace has its own layout and navigation state. The login screen provides access to both workspaces.
 
+Create account opens Driver registration. The registration form starts with empty fields and returns to login through Sign in or the back button.
+
 Parking administrators access parking infrastructure from More. Infrastructure connects to floor-plan upload and the digital parking map, with dedicated navigation for each view.
+
+The Parking Admin account button returns to login from Dashboard, Occupancy, Alerts, and Parking infrastructure. Driver returns to login through Sign out in Profile.
 
 ## Technology
 
@@ -63,7 +67,7 @@ Run the following commands from the project directory on Windows:
 
 On macOS or Linux, use `./gradlew` instead of `./gradlew.bat`.
 
-Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, tab selection, returning to the login screen, activity recreation, login inputs, the administrator menu, and navigation between infrastructure, floor-plan upload, and the digital parking map.
+Instrumented tests require a connected Android device or a running emulator. The UI tests cover role navigation, tab selection, returning to the login screen, activity recreation, login and registration inputs, the administrator menu, and navigation between infrastructure, floor-plan upload, and the digital parking map.
 
 The debug APK is generated at `app/build/outputs/apk/debug/app-debug.apk`. Lint reports are generated under `app/build/reports/`.
 
@@ -86,7 +90,7 @@ app/src/main/
     `-- values/
 ```
 
-- `presentation/login`: login interface and input state.
+- `presentation/login`: login and registration interfaces and input state.
 - `presentation/driver`: Driver workspace and navigation destinations.
 - `presentation/parking_admin`: Parking Admin workspace and navigation destinations.
 - `presentation/common`: shared interface components.

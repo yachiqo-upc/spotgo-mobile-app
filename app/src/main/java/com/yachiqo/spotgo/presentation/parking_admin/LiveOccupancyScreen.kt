@@ -20,9 +20,9 @@ import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LiveOccupancyScreen(onUnavailableAction: () -> Unit) {
+fun LiveOccupancyScreen(onUnavailableAction: () -> Unit, onBackToLogin: () -> Unit) {
     AdminPage(stringResource(R.string.admin_occupancy_title), stringResource(R.string.admin_occupancy_subtitle),
-        onAccount = onUnavailableAction, contentSpacing = 16.dp, contentTopPadding = 18.dp) {
+        onAccount = onBackToLogin, contentSpacing = 16.dp, contentTopPadding = 18.dp) {
         AdminSearchBar(R.string.admin_occupancy_search, onUnavailableAction)
         AdminFilterRow(listOf(R.string.admin_occupancy_all, R.string.admin_available, R.string.admin_occupancy_issues), onUnavailableAction)
         OccupancyMap(onUnavailableAction)
@@ -84,5 +84,5 @@ private fun OccupancyStat(value: String, label: String, color: Color, modifier: 
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun LiveOccupancyPreview() {
-    SpotGoTheme { Surface { LiveOccupancyScreen({}) } }
+    SpotGoTheme { Surface { LiveOccupancyScreen({}, {}) } }
 }

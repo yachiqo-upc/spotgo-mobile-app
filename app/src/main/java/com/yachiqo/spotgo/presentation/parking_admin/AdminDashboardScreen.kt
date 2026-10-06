@@ -17,9 +17,9 @@ import com.yachiqo.spotgo.presentation.parking_admin.components.*
 import com.yachiqo.spotgo.ui.theme.SpotGoTheme
 
 @Composable
-fun AdminDashboardScreen(onOpenOccupancy: () -> Unit, onUnavailableAction: () -> Unit) {
+fun AdminDashboardScreen(onOpenOccupancy: () -> Unit, onUnavailableAction: () -> Unit, onBackToLogin: () -> Unit) {
     AdminPage(stringResource(R.string.admin_dashboard_title), stringResource(R.string.admin_dashboard_subtitle),
-        onAccount = onUnavailableAction) {
+        onAccount = onBackToLogin) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             DashboardMetric(stringResource(R.string.admin_dashboard_occupancy_value), stringResource(R.string.admin_occupancy),
                 MaterialTheme.colorScheme.primary, Modifier.weight(1f), onOpenOccupancy, progress = 0.58f)
@@ -80,5 +80,5 @@ private fun DashboardMetric(value: String, label: String, color: Color, modifier
 @Preview(widthDp = 412, heightDp = 915)
 @Composable
 private fun AdminDashboardPreview() {
-    SpotGoTheme { Surface { AdminDashboardScreen({}, {}) } }
+    SpotGoTheme { Surface { AdminDashboardScreen({}, {}, {}) } }
 }

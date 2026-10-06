@@ -74,6 +74,7 @@ import kotlin.math.roundToInt
 fun LoginScreen(
     onOpenDriver: () -> Unit,
     onOpenParkingAdmin: () -> Unit,
+    onCreateAccount: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val email = rememberTextFieldState()
@@ -212,7 +213,7 @@ fun LoginScreen(
                             style = MaterialTheme.typography.bodyMedium,
                         )
                         TextButton(
-                            onClick = showPendingAction,
+                            onClick = { focusManager.clearFocus(); onCreateAccount() },
                             modifier = Modifier.height(30.dp),
                             contentPadding = PaddingValues(horizontal = 6.dp),
                         ) {
@@ -261,7 +262,7 @@ fun LoginScreen(
 }
 
 @Composable
-private fun Modifier.figmaFieldBounds(): Modifier {
+internal fun Modifier.figmaFieldBounds(): Modifier {
     // Figma measures the 56 dp outline, with the floating label extending above it.
     // Material reserves half a label line above that outline; keep the artwork's bounds.
     val labelInset = MaterialTheme.typography.bodySmall.lineHeight / 2
@@ -275,7 +276,7 @@ private fun Modifier.figmaFieldBounds(): Modifier {
 }
 
 @Composable
-private fun loginFieldColors() = OutlinedTextFieldDefaults.colors(
+internal fun loginFieldColors() = OutlinedTextFieldDefaults.colors(
     focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
     unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -288,5 +289,5 @@ private fun loginFieldColors() = OutlinedTextFieldDefaults.colors(
 @Preview(name = "Login · Compact", widthDp = 360, heightDp = 800, showBackground = true)
 @Composable
 private fun LoginPreview() {
-    SpotGoTheme { LoginScreen(onOpenDriver = {}, onOpenParkingAdmin = {}) }
+    SpotGoTheme { LoginScreen(onOpenDriver = {}, onOpenParkingAdmin = {}, onCreateAccount = {}) }
 }
