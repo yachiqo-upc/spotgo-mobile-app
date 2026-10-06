@@ -2,6 +2,7 @@ package com.yachiqo.spotgo.presentation.driver
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -42,14 +43,17 @@ fun DriverLayout(
     content: (@Composable (DriverDestination) -> Unit)? = null,
 ) {
     var destination by rememberSaveable { mutableStateOf(DriverDestination.EXPLORE) }
+    var showZoneDetails by rememberSaveable { mutableStateOf(false) }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.driver_action_unavailable)
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
+    BackHandler(enabled = showZoneDetails) { showZoneDetails = false }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
+            if (!showZoneDetails) {
             NavigationBar(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars).height(64.dp),
                 windowInsets = WindowInsets(0), containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                 DriverDestination.entries.forEach { item ->
@@ -70,13 +74,18 @@ fun DriverLayout(
                     )
                 }
             }
+            }
         },
     ) { innerPadding ->
         Box(Modifier.fillMaxSize().padding(innerPadding)) {
-            if (content != null) content(destination)
+            if (showZoneDetails) ZoneDetailsScreen(
+                onBack = { showZoneDetails = false }, onContinue = unavailableAction,
+                onUnavailableAction = unavailableAction,
+            )
+            else if (content != null) content(destination)
             else when (destination) {
                 DriverDestination.EXPLORE -> ExploreParkingScreen(
-                    onOpenZone = unavailableAction,
+                    onOpenZone = { showZoneDetails = true },
                     onProfile = { destination = DriverDestination.PROFILE },
                     onUnavailableAction = unavailableAction,
                 )
