@@ -42,6 +42,7 @@ fun ParkingAdminLayout(
     content: (@Composable (ParkingAdminDestination) -> Unit)? = null,
 ) {
     var destination by rememberSaveable { mutableStateOf(ParkingAdminDestination.DASHBOARD) }
+    var showMore by rememberSaveable { mutableStateOf(false) }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.admin_action_unavailable)
@@ -57,9 +58,8 @@ fun ParkingAdminLayout(
             ) {
                 ParkingAdminDestination.entries.forEach { item ->
                     NavigationBarItem(
-                        selected = item == destination,
-                        enabled = item != ParkingAdminDestination.MORE,
-                        onClick = { destination = item },
+                        selected = if (showMore) item == ParkingAdminDestination.MORE else item == destination,
+                        onClick = { if (item == ParkingAdminDestination.MORE) showMore = true else destination = item },
                         icon = {
                             FigmaIcon(item.icon)
                         },
@@ -91,6 +91,9 @@ fun ParkingAdminLayout(
                 else -> FeaturePlaceholder(stringResource(destination.label))
             }
         }
+    }
+    if (showMore) {
+        AdministratorMoreSheet(onDismiss = { showMore = false }, onOpenInfrastructure = unavailableAction)
     }
 }
 
