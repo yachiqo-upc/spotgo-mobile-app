@@ -101,6 +101,10 @@ fun DriverLayout(
                     onProfile = { destination = DriverDestination.PROFILE },
                     onUnavailableAction = unavailableAction,
                 )
+                DriverDestination.PAYMENTS -> PaymentsScreen(
+                    onProfile = { destination = DriverDestination.PROFILE },
+                    onUnavailableAction = unavailableAction,
+                )
                 else -> FeaturePlaceholder(stringResource(destination.label))
             }
         }
