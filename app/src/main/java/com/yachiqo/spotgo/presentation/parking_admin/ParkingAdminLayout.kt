@@ -36,6 +36,8 @@ enum class ParkingAdminDestination(@get:StringRes val label: Int, @get:DrawableR
     MORE(R.string.admin_more, R.drawable.ic_more),
 }
 
+private enum class AdminScreen { MAIN, INFRASTRUCTURE }
+
 @Composable
 fun ParkingAdminLayout(
     onBackToLogin: () -> Unit,
@@ -43,11 +45,16 @@ fun ParkingAdminLayout(
 ) {
     var destination by rememberSaveable { mutableStateOf(ParkingAdminDestination.DASHBOARD) }
     var showMore by rememberSaveable { mutableStateOf(false) }
+    var screen by rememberSaveable { mutableStateOf(AdminScreen.MAIN) }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val unavailableMessage = stringResource(R.string.admin_action_unavailable)
     val unavailableAction: () -> Unit = { scope.launch { snackbar.showSnackbar(unavailableMessage) }; Unit }
-    BackHandler(onBack = onBackToLogin)
+    BackHandler {
+        if (showMore) showMore = false
+        else if (screen != AdminScreen.MAIN) screen = AdminScreen.MAIN
+        else onBackToLogin()
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
@@ -58,8 +65,11 @@ fun ParkingAdminLayout(
             ) {
                 ParkingAdminDestination.entries.forEach { item ->
                     NavigationBarItem(
-                        selected = if (showMore) item == ParkingAdminDestination.MORE else item == destination,
-                        onClick = { if (item == ParkingAdminDestination.MORE) showMore = true else destination = item },
+                        selected = if (showMore || screen != AdminScreen.MAIN) item == ParkingAdminDestination.MORE else item == destination,
+                        onClick = {
+                            if (item == ParkingAdminDestination.MORE) showMore = true
+                            else { destination = item; screen = AdminScreen.MAIN }
+                        },
                         icon = {
                             FigmaIcon(item.icon)
                         },
@@ -80,7 +90,9 @@ fun ParkingAdminLayout(
         },
     ) { innerPadding ->
         Box(Modifier.fillMaxSize().padding(innerPadding)) {
-            if (content != null) content(destination)
+            if (screen == AdminScreen.INFRASTRUCTURE) ParkingInfrastructureScreen(
+                onOpenUpload = unavailableAction, onOpenMap = unavailableAction, onUnavailableAction = unavailableAction)
+            else if (content != null) content(destination)
             else when (destination) {
                 ParkingAdminDestination.DASHBOARD -> AdminDashboardScreen(
                     onOpenOccupancy = { destination = ParkingAdminDestination.LIVE_MAP },
@@ -93,7 +105,8 @@ fun ParkingAdminLayout(
         }
     }
     if (showMore) {
-        AdministratorMoreSheet(onDismiss = { showMore = false }, onOpenInfrastructure = unavailableAction)
+        AdministratorMoreSheet(onDismiss = { showMore = false },
+            onOpenInfrastructure = { showMore = false; screen = AdminScreen.INFRASTRUCTURE })
     }
 }
 

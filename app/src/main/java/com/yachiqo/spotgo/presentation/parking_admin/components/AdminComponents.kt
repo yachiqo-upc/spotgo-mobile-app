@@ -120,3 +120,31 @@ internal fun AdminStatusBadge(label: String, color: Color, background: Color, do
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun AdminSearchBar(placeholder: Int, onUnavailableAction: () -> Unit) {
+    SearchBar(
+        inputField = {
+            SearchBarDefaults.InputField(query = "", onQueryChange = {}, onSearch = {}, expanded = false,
+                onExpandedChange = { if (it) onUnavailableAction() },
+                placeholder = { Text(stringResource(placeholder)) },
+                leadingIcon = { FigmaIcon(R.drawable.ic_explore) })
+        },
+        expanded = false, onExpandedChange = {}, modifier = Modifier.fillMaxWidth(),
+        windowInsets = WindowInsets(0), colors = SearchBarDefaults.colors(containerColor = Color(0xFF23202D)),
+    ) {}
+}
+
+@Composable
+internal fun AdminFileRow(fileName: String, detail: String, modifier: Modifier = Modifier) {
+    Surface(modifier.fillMaxWidth().heightIn(min = 48.dp), shape = RoundedCornerShape(14.dp), color = Color(0xFF23202D)) {
+        Row(Modifier.padding(horizontal = 10.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(fileName, Modifier.weight(1f), style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp, lineHeight = 19.sp),
+                color = MaterialTheme.colorScheme.primary)
+            Text(detail, style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
